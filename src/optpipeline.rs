@@ -504,6 +504,7 @@ fn passes_match(before: &str, after: &str) -> Result<(), PassDumpError> {
 pub fn process(
     dump: &str,
     apply_filters: bool,
+    full_module: bool,
 ) -> Result<(&str, OptPipelineResults), PassDumpError> {
     let llvm_pass_dump_parser = LlvmPassDumpParser::new();
     llvm_pass_dump_parser.process(
@@ -511,7 +512,7 @@ pub fn process(
         &OptPipelineBackendOptions {
             filter_debug_info: true,
             filter_ir_metadata: true,
-            full_module: false,
+            full_module,
             no_discard_value_names: false,
             demangle: false,
             library_functions: false,

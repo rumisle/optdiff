@@ -83,6 +83,10 @@ struct Args {
     /// Pass through prefix
     #[arg(long = "passthrough")]
     passthrough: bool,
+
+    /// Don't break down into individual functions, diff the whole module
+    #[arg(short = 'w', long = "whole-module")]
+    whole_module: bool,
 }
 
 fn read_input(args: &Args) -> Result<String, io::Error> {
@@ -244,7 +248,8 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    let (prefix, result) = optpipeline::process(&dump, true).wrap_err("Parsing error")?;
+    let (prefix, result) =
+        optpipeline::process(&dump, true, args.whole_module).wrap_err("Parsing error")?;
     cli_write!(io::stderr(), "{}", prefix)?;
 
     if let Some(expected) = args.function {
